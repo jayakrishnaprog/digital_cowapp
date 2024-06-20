@@ -1,11 +1,18 @@
 package com.bezkoder.spring.datajpa.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,14 +33,15 @@ import org.slf4j.LoggerFactory;
 import lombok.val;
 
 //@CrossOrigin(origins = "http://localhost:8081")
-@RestController
+
 @RequestMapping("/api")
+@RestController
 public class CowController {
 	private static final Logger logger = LoggerFactory.getLogger(CowController.class);
 	@Autowired
 	Cowrepository cowrepository;
 
-	@GetMapping("health")
+	 @GetMapping("/health")
 	public String health() {
 		return "good";
 	}
@@ -42,9 +50,11 @@ public class CowController {
 	public ResponseEntity<List<Cow>> findAll() {
 		{
 			try {
+				//String str = new String(datas.peek(), StandardCharsets.UTF_8);
 				List<Cow> abc = cowrepository.findAll();
 				//System.out.println(abc);
-				logger.info(abc.toString());
+				//logger.info("findAll" +abc.toString());
+				//logger.debug("findAll" +abc.toString());
 				return new ResponseEntity<>(abc, HttpStatus.OK);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -79,16 +89,54 @@ public class CowController {
 	}
 
 	@PostMapping("/save")
-	public ResponseEntity<Cow> postAPI(@RequestBody String input) {
+	public ResponseEntity<Cow> postAPI(@RequestBody String replacedStr) {
 		{
-			logger.info("postAPI calling :: input "+input);
+			String  input= replacedStr.replace("\\/", "/");
+			//String input = new String(byteArrayDeque);
+		//	logger.info("postAPI calling :: input "+input);
+			
 			try {
-				List<Cow> list = listData(input);
+				/*List<Cow> list = listData(input);
+				List<CompletableFuture<Void>> futures = list.stream()
+					    .map(record -> CompletableFuture.runAsync(() -> {
+					        try {
+					          //  logger.info("Record going for save : " + record);
+					            cowrepository.save(record);
+					        } catch (Exception e) {
+					            logger.error("Exception occurred while saving record: " + e.getMessage());
+					        }
+					    }))
+					    .collect(Collectors.toList());
+				CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();*/
+				/*list.parallelStream().forEach(record -> {
+					
+					try {
+						logger.info("Record going for save : " + record);
+						cowrepository.save(record);
+					} catch (Exception e) {
+						logger.info("Exception block  : " + e);
+					}
+				});*/
+				// cowrepository.saveAll(list);
 				
-				list.forEach(x->{
-					logger.info("Record going for save : "+x);
-				});
-				cowrepository.saveAll(list);
+				Executor executor = Executors.newFixedThreadPool(30);
+
+				List<Cow> list1 = listData(input);
+				List<CompletableFuture<Void>> futures1 = list1.parallelStream()
+				    .map(record -> CompletableFuture.runAsync(() -> {
+				        try {
+				            // Task code here
+				            cowrepository.save(record);
+				        } catch (Exception e) {
+				            logger.error("Exception occurred while saving record: " + e.getMessage());
+				        }
+				    }, executor))
+				    .collect(Collectors.toList());
+
+				// Wait for all CompletableFuture instances to complete
+				CompletableFuture<Void> allOf = CompletableFuture.allOf(futures1.toArray(new CompletableFuture[0]));
+				allOf.join();
+
 				return new ResponseEntity<>(null, HttpStatus.OK);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -98,16 +146,19 @@ public class CowController {
 	}
 	int number = 0; 
 	private List<Cow> listData(String in) {
-		String abc=in.replace(";EOD","");
-		System.out.println(abc);
+		//logger.info("input is  ::"+in);
+		String abc=in.replace(";EOD","");;
+		/*
+		 * if(in.contains("EOD")){ abc=in.replace(";EOD",""); }else { abc=in; }
+		 */	
+		//logger.info("inside listData () ::"+abc);	
+		
 		String ini = abc.replace("\"data\": ", "");
 		String input = ini.replace("\"data\":", "");
 
 		List<Cow> list = new ArrayList();
 		String[] records = input.split(";");
-	//	System.out.println(records[0]);
-	//	System.out.println(records[1]);
-	//	System.out.println(records[2]);
+	
 		for (String record1 : records) {
 			String record2=record1.replace("{", "");
 			String record3=record2.replace("}", "");
@@ -127,6 +178,13 @@ public class CowController {
 			BigDecimal X;
 			BigDecimal Y;
 			BigDecimal Z;
+			BigDecimal MX;
+			BigDecimal MY;
+			BigDecimal MZ;
+			BigDecimal GX;
+			BigDecimal GY;
+			BigDecimal GZ;
+			int VIB;
 			
 	        
 	       
@@ -165,7 +223,6 @@ public class CowController {
 					pojo.setTemperature(temperature);
 					break;
 				case "X":
-					
 					String standardString1 = value.replaceAll("[^\\p{ASCII}]", "-");
 					X=new BigDecimal(standardString1.trim());
 					pojo.setX(X);
@@ -180,6 +237,40 @@ public class CowController {
 					Z=new BigDecimal(standardString3.trim());
 					pojo.setZ(Z);
 					break;
+				case "GX":
+					String standardString4 = value.replaceAll("[^\\p{ASCII}]", "-");
+					GX=new BigDecimal(standardString4.trim());
+					pojo.setGX(GX);
+					break;
+				case "GY":
+					String standardString5=value.replaceAll("[^\\p{ASCII}]", "-");
+					GY=new BigDecimal(standardString5.trim());
+					pojo.setGY(GY);
+					break;
+				case "GZ":
+					String standardString6=value.replaceAll("[^\\p{ASCII}]", "-");
+					GZ=new BigDecimal(standardString6.trim());
+					pojo.setGZ(GZ);
+					break;
+				case "MX":
+					String standardString7 = value.replaceAll("[^\\p{ASCII}]", "-");
+					MX=new BigDecimal(standardString7.trim());
+					pojo.setMX(MX);
+					break;
+				case "MY":
+					String standardString8=value.replaceAll("[^\\p{ASCII}]", "-");
+					MY=new BigDecimal(standardString8.trim());
+					pojo.setMY(MY);
+					break;
+				case "MZ":
+					String standardString9=value.replaceAll("[^\\p{ASCII}]", "-");
+					MZ=new BigDecimal(standardString9.trim());
+					pojo.setMZ(MZ);
+					break;
+				case "VIB":
+					VIB = Integer.parseInt(value.trim());
+					pojo.setVib(VIB);
+					break;
 				default:
 					break;
 				}
@@ -190,7 +281,7 @@ public class CowController {
 			//System.out.println(list.size());
 		}
 		//System.out.println(list.size());
-		logger.info("Final list for saving  :: "+ list.toString());
+		//logger.info("Final list for saving  :: "+ list.toString());
 		return list;
 
 	}

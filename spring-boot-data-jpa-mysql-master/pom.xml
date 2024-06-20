@@ -12,14 +12,32 @@
 	<groupId>com.bezkoder</groupId>
 	<artifactId>digital_cowapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cowapp</name>
-	<description>Demo project for Spring Boot Apis CRUD using Spring Data JPA</description>
+	<name>digital_cowapp</name>
+	<description>Demo project</description>
 	<packaging>war</packaging>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+    <groupId>com.zaxxer</groupId>
+    <artifactId>HikariCP</artifactId>
+   <!-- <version>4.0.3</version>--> <!-- Use the latest version -->
+</dependency>
+
+		<!--<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>-->
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-logging -->
+<!--<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-logging</artifactId>
+    <version>3.2.5</version>
+</dependency>-->
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -42,11 +60,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-<dependency>
-    <groupId>com.google.code.gson</groupId>
-    <artifactId>gson</artifactId>
-    <version>2.10.1</version>
-</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.10.1</version>
+		</dependency>
 
 		<!--
 		https://mvnrepository.com/artifact/org.eclipse.angus/angus-activation -->
@@ -89,13 +107,13 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter</artifactId>
-</dependency>
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-log4j2</artifactId>
-</dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<!--<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>-->
 
 	</dependencies>
 

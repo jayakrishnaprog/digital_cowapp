@@ -11,4 +11,6 @@ public interface Cowrepository extends JpaRepository<Cow, String> {
 	//List<CowEntity> findByPublished(boolean published);
 		//List<CowEntity> findByTitleContaining(String title);
 	//Cow findbyId(String id);
+	
+	<S extends Cow> S save(S entity);
 }

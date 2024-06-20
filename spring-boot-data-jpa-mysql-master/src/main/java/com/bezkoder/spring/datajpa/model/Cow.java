@@ -13,7 +13,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "cc2")
+@Table(name = "cc10")
 @Setter
 @Getter
 @ToString
@@ -22,11 +22,48 @@ public class Cow{
 	@Id
 	@JsonIgnore
 	int sno;
+	public Cow(int sno, LocalDateTime timeStamp, String id, int spo2, int bpm, int vib, double temperature,
+			BigDecimal x, BigDecimal y, BigDecimal z, BigDecimal mX, BigDecimal mY, BigDecimal mZ, BigDecimal gX,
+			BigDecimal gY, BigDecimal gZ) {
+		super();
+		this.sno = sno;
+		this.timeStamp = timeStamp;
+		this.id = id;
+		this.spo2 = spo2;
+		this.bpm = bpm;
+		this.vib = vib;
+		this.temperature = temperature;
+		X = x;
+		Y = y;
+		Z = z;
+		MX = mX;
+		MY = mY;
+		MZ = mZ;
+		GX = gX;
+		GY = gY;
+		GZ = gZ;
+	}
+
+
+
+
 	public int getSno() {
 		return sno;
 	}
 	
 	
+
+
+	@Override
+	public String toString() {
+		return "Cow [sno=" + sno + ", timeStamp=" + timeStamp + ", id=" + id + ", spo2=" + spo2 + ", bpm=" + bpm
+				+ ", vib=" + vib + ", temperature=" + temperature + ", X=" + X + ", Y=" + Y + ", Z=" + Z + ", MX=" + MX
+				+ ", MY=" + MY + ", MZ=" + MZ + ", GX=" + GX + ", GY=" + GY + ", GZ=" + GZ + "]";
+	}
+
+
+
+
 	public void setSno(int sno) {
 		this.sno = sno;
 	}
@@ -64,10 +101,83 @@ public class Cow{
 	private String id;
 	private int spo2;
 	private int bpm;
+	private int vib;
+	public int getVib() {
+		return vib;
+	}
+
+
+	public void setVib(int vib) {
+		this.vib = vib;
+	}
 	private double temperature;
 	private BigDecimal X;
 	private BigDecimal Y;
 	private BigDecimal Z;
+	private BigDecimal MX;
+	public BigDecimal getMX() {
+		return MX;
+	}
+
+
+	public void setMX(BigDecimal mX) {
+		MX = mX;
+	}
+
+
+	public BigDecimal getMY() {
+		return MY;
+	}
+
+
+	public void setMY(BigDecimal mY) {
+		MY = mY;
+	}
+
+
+	public BigDecimal getMZ() {
+		return MZ;
+	}
+
+
+	public void setMZ(BigDecimal mZ) {
+		MZ = mZ;
+	}
+
+
+	public BigDecimal getGX() {
+		return GX;
+	}
+
+
+	public void setGX(BigDecimal gX) {
+		GX = gX;
+	}
+
+
+	public BigDecimal getGY() {
+		return GY;
+	}
+
+
+	public void setGY(BigDecimal gY) {
+		GY = gY;
+	}
+
+
+	public BigDecimal getGZ() {
+		return GZ;
+	}
+
+
+	public void setGZ(BigDecimal gZ) {
+		GZ = gZ;
+	}
+	private BigDecimal MY;
+	private BigDecimal MZ;
+	private BigDecimal GX;
+	private BigDecimal GY;
+	private BigDecimal GZ;
 	public BigDecimal getX() {
 		return X;
 	}
@@ -93,26 +203,9 @@ public class Cow{
 	}
 
 
-	public Cow(int sno, LocalDateTime timeStamp, String id, int spo2, int bpm, double temperature, BigDecimal x,
-			BigDecimal y, BigDecimal z) {
-		super();
-		this.sno = sno;
-		this.timeStamp = timeStamp;
-		this.id = id;
-		this.spo2 = spo2;
-		this.bpm = bpm;
-		this.temperature = temperature;
-		X = x;
-		Y = y;
-		Z = z;
-	}
 
 
-	@Override
-	public String toString() {
-		return "Cow [sno=" + sno + ", timeStamp=" + timeStamp + ", id=" + id + ", spo2=" + spo2 + ", bpm=" + bpm
-				+ ", temperature=" + temperature + ", X=" + X + ", Y=" + Y + ", Z=" + Z + "]";
-	}
+	
 
 
 	public void setZ(BigDecimal z) {
